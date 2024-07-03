@@ -48,6 +48,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       isRegistrationSuccess = await registerApi(fname, lname, email, number);
       if (isRegistrationSuccess) alert("Registration Success!, Access you password in you email inbox");
     } catch (error) {
+      alert("Some error occurred");
       setError(error);
     }
     setLoading(false);

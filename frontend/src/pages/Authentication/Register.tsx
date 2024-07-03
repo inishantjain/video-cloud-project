@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 
 const Register = () => {
-  const { register } = useAuth();
+  const { register, loading } = useAuth();
   const [form, setForm] = useState({ fname: "", lname: "", email: "", number: 9111111111 });
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -18,14 +17,12 @@ const Register = () => {
 
   const handleFormSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    setLoading(true);
     try {
       await register(form.fname, form.lname, form.email, form.number);
     } catch (error) {
       alert("some error occurred");
       console.error(error);
     }
-    setLoading(false);
   };
 
   return (

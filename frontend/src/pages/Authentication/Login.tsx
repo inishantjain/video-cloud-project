@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 const Login = () => {
-  const { login, error } = useAuth();
+  const { login, error, loading } = useAuth();
   const [form, setForm] = useState({ fname: "", password: "" });
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,8 +71,11 @@ const Login = () => {
               </div>
 
               <div className="mt-6">
-                <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                  Login
+                <button
+                  disabled={loading}
+                  className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                >
+                  {loading ? <Spinner /> : "Login"}
                 </button>
               </div>
               {error && <p>{error}</p>}

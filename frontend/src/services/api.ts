@@ -7,7 +7,8 @@ export async function loginApi(fname: string, password: string) {
   });
   const jsonRes = await res.json();
   localStorage.setItem("access_token", `Bearer ${jsonRes.token}`); //FIXME: send token with cookie
-  if (res.ok) return jsonRes.user;
+  if (res.status === 401 || res.status === 400) alert("Invalid credentials");
+  else if (res.ok) return jsonRes.user;
   throw new Error("Could not login, Error: " + jsonRes?.message);
 }
 
