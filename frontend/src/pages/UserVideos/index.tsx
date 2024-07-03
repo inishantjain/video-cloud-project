@@ -22,7 +22,6 @@ function UserVideos({}: indexProps) {
       setLoading(true);
       try {
         const videos = await getVideoByUserApi({ username });
-        console.log(videos);
         if (videos) setVideos(videos);
       } catch (error) {
         //FIXME: handle error properly
