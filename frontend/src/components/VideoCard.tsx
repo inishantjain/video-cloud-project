@@ -1,18 +1,31 @@
 import { VideoProps } from "../types/types";
 
 function VideoCard({ title, description, thumbnail, url }: VideoProps) {
-  console.log(url?.replace(/\.[^/.]+$/, ".jpg"));
   return (
-    <div className="w-full max-w-xs overflow-hidden h-72 bg-white rounded-lg shadow-xl">
-      <img className="object-cover w-full min-h-40" src={thumbnail || url.replace(/\.[^/.]+$/, ".jpg")} alt={title} />
-
-      <div className="py-5 text-center">
-        <a href="#" className="block text-xl font-bold text-gray-800 " tab-index="0" role="link">
-          {title}
-        </a>
-        <span className="text-sm text-gray-700 line-clamp-2">{description}</span>
+    <>
+      <div>
+        <div className="group cursor mx-4 overflow-hidden rounded-2xl bg-white shadow-xl duration-200">
+          <div className="flex h-40 flex-col justify-between overflow-hidden">
+            <img
+              src={thumbnail || url.replace(/\.[^/.]+$/, ".jpg")}
+              alt={title}
+              className="group-hover:scale-110 h-full w-full object-cover duration-200"
+            />
+          </div>
+          <div className="flex-1 overflow-hidden bg-white px-6 py-3">
+            <h5 className="group-hover:text-indigo-600 mb-2 text-xl font-bold text-ellipsis">{title}</h5>
+            <p className="mb-3 text-gray-600 text-sm">{description}</p>
+            <div className="flex justify-between">
+              <button className="group font-bold text-sm focus:text-indigo-600 hover:text-indigo-600">
+                <span>▷</span>&nbsp;
+                <span className="underline">Watch Now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="mx-2 rounded-xl bg-gray-100"></div>
       </div>
-    </div>
+    </>
   );
 }
 

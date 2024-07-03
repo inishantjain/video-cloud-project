@@ -56,9 +56,11 @@ export async function getVideoFeedApi() {
   throw new Error("Could not fetch videos: " + jsonRes?.message);
 }
 
-export async function getVideoByUserIdApi(userId: string) {
+//TODO: fix this function integrity
+export async function getVideoByUserApi({ userId, username }: { userId?: string; username?: string }) {
   let url = new URL("videos", BASE_URL);
-  url.searchParams.set("user", userId);
+  if (userId) url.searchParams.set("userId", userId);
+  else if (username) url.searchParams.set("username", username);
   const res = await fetch(url);
   const jsonRes = await res.json();
   if (res.ok) return jsonRes.videosData;

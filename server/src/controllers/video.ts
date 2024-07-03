@@ -44,9 +44,13 @@ export const getVideoFeed = asyncWrapper(async (req: Request, res: Response) => 
 //////////////////G E T////V I D E O////B Y////U S E R//////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 export const getVideosByUserId = asyncWrapper(async (req: Request, res: Response) => {
-  const id = req.query.user;
-  if (!id) throw new BadRequestError("user id is not provided");
-  const user = await User.findById(id).populate("videos");
+  const id = req.query.userId;
+  const fname = req.query.username;
+  let user;
+  if (id) user = await User.findById(id).populate("videos");
+  else if (fname) user = await User.findOne({ fname }).populate("videos");
+  else throw new BadRequestError("please provide either userid or usernane");
+
   if (!user) throw new NotFoundError("No user found");
 
   res.status(200).json({ videosData: user.videos });

@@ -15,7 +15,11 @@ export const register = asyncWrapper(async (req: Request, res: Response) => {
   let user = await User.findOne({ fname });
   if (user) throw new BadRequestError("User already exists");
   const password = generateNewPassword({ fname, lname, email, number });
-  await mailSender(email, "Get Your Password here", `Your password is ${password}`);
+  await mailSender(
+    email,
+    "Get Your Password here",
+    `Hello ${fname} Your username is ${fname} and your password is ${password}`
+  );
   user = new User({ fname, lname, email, number, password });
   await user.save();
   res.status(201).json({ message: "User created successfully" });

@@ -5,7 +5,7 @@ import BioChangeModal from "./BioChangeModal";
 import VideoUploadModal from "./VideoUploadModal";
 import MyVideos from "./MyVideos";
 import { VideoProps } from "../../types/types";
-import { getVideoByUserIdApi } from "../../services/api";
+import { getVideoByUserApi } from "../../services/api";
 
 /**Component */
 function Profile() {
@@ -17,7 +17,7 @@ function Profile() {
 
   useEffect(() => {
     (async () => {
-      const fetchedVideos = await getVideoByUserIdApi(user!._id);
+      const fetchedVideos = await getVideoByUserApi({ userId: user!._id });
       if (videos) setVideos(fetchedVideos);
     })();
   }, []);
@@ -28,7 +28,7 @@ function Profile() {
         <img
           className="block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0"
           src={user?.imgUrl || "https://placehold.co/500"}
-          alt="Woman's Face"
+          alt="placeholder"
         />
         <div className="flex-1 flex justify-between items-start text-center space-y-2 sm:text-left">
           <div className="space-y-0.5">

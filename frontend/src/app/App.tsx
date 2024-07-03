@@ -20,7 +20,8 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/feed" element={<Feed />} />
-        <Route path="/videos/:id" element={<UserVideos />} />
+        <Route path="/videos" element={<UserVideos />} />
+        <Route path="*" element={<h1 className="text-3xl">Not Found !</h1>} />
       </Routes>
     </>
   );

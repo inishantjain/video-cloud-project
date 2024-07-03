@@ -16,19 +16,19 @@ function Feed() {
   return (
     <div className="w-11/12 mx-auto">
       {user.map((user) => (
-        <div key={user._id}>
-          <div className="flex justify-between py-5">
+        <div key={user._id} className="z-0">
+          <div className="flex justify-between py-5 -z-10">
             <h3>
               Videos By <span className="capitalize font-semibold text-xl">{user.fname + " " + user.lname}</span>
             </h3>
             <Link
               className="px-4 py-1 text-lg text-blue-600 font-semibold focus:ring-offset-2"
-              to={"/video/" + user.fname}
+              to={"/videos?user=" + user.fname}
             >
               See All &#8680;
             </Link>
           </div>
-          <div className="flex overflow-x-scroll gap-3 z-10 items-center">
+          <div className="flex overflow-x-scroll gap-3 items-center justify-start">
             {user.videos.map((video) => (
               <VideoCard key={video._id} {...video} />
             ))}
