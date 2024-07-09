@@ -1,6 +1,4 @@
-# Mysticript
-
-- Video Cloud Project
+# Video Cloud Project
 
 # Description
 
