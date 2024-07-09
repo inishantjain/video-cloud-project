@@ -4,8 +4,17 @@ import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 
 const Register = () => {
-  const { register, loading } = useAuth();
-  const [form, setForm] = useState({ fname: "", lname: "", email: "", number: 9111111111 });
+  const { register, loading, error } = useAuth();
+  const [form, setForm] = useState({ fname: "", lname: "", email: "", number: "" });
+
+  const validate = () => {
+    if (!form.fname || !form.lname) return alert("First and Last name is required");
+    else if (!form.email) return alert("Email is required");
+    else if (!form.number) return alert("Number is required");
+    else if (form.number.length < 6) return alert("Password must be at least 6 characters");
+
+    return true;
+  };
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -15,8 +24,9 @@ const Register = () => {
     });
   };
 
-  const handleFormSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    if (!validate()) return;
     try {
       await register(form.fname, form.lname, form.email, form.number);
     } catch (error) {
@@ -27,7 +37,7 @@ const Register = () => {
 
   return (
     <div className="bg-white">
-      <div className="flex min-h-screen items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+      <div className="flex min-h-[90vh] items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
         <div className="flex-1">
           <div className="text-center">
             <div className="flex justify-center mx-auto">
@@ -38,7 +48,7 @@ const Register = () => {
           </div>
 
           <div className="mt-8">
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={formHandler}>
               <div>
                 <label htmlFor="fname" className="block mb-2 text-sm text-gray-600 ">
                   First Name
@@ -109,6 +119,7 @@ const Register = () => {
                 </button>
               </div>
             </form>
+            {error?.type === "register" && <p className="text-center lowercase text-red-600">{error?.message}</p>}
 
             <p className="mt-6 text-sm text-center text-gray-400">
               Already have an account?{" "}

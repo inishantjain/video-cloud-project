@@ -32,7 +32,9 @@ export const login = asyncWrapper(async (req: Request, res: Response) => {
   const { fname, password } = await req.body;
   if (!fname || !password) throw new BadRequestError("Please provide all fields");
   const user = await User.findOne({ fname });
-  if (!user || !user.comparePassword(password)) throw new UnAuthenticatedError("Username or Password incorrect");
+  console.log(password, user?.comparePassword(password));
+  if (!user || !(await user.comparePassword(password)))
+    throw new UnAuthenticatedError("Username or Password incorrect");
 
   const token = await user.createJWT();
   res

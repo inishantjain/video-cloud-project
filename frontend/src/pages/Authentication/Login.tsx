@@ -7,6 +7,14 @@ const Login = () => {
   const { login, error, loading } = useAuth();
   const [form, setForm] = useState({ fname: "", password: "" });
 
+  const validate = () => {
+    if (!form.fname) return alert("First name is required");
+    else if (!form.password) return alert("Password is required");
+    else if (form.password.length < 6) return alert("Password must be at least 6 characters");
+
+    return true;
+  };
+
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
     setForm({
@@ -15,9 +23,15 @@ const Login = () => {
     });
   };
 
+  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validate()) return;
+    login(form.fname, form.password);
+  };
+
   return (
     <div className="bg-white">
-      <div className="flex min-h-screen items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+      <div className="flex min-h-[90vh] items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
         <div className="flex-1">
           <div className="text-center">
             <div className="flex justify-center mx-auto">
@@ -28,12 +42,7 @@ const Login = () => {
           </div>
 
           <div className="mt-8">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                login(form.fname, form.password);
-              }}
-            >
+            <form onSubmit={formHandler}>
               <div>
                 <label htmlFor="fname" className="block mb-2 text-sm text-gray-600 ">
                   First Name
@@ -78,9 +87,8 @@ const Login = () => {
                   {loading ? <Spinner /> : "Login"}
                 </button>
               </div>
-              {error && <p>{error}</p>}
             </form>
-
+            {error?.type === "login" && <p className="text-center lowercase text-red-600">{error?.message}</p>}
             <p className="mt-6 text-sm text-center text-gray-400">
               Don&#x27;t have an account yet?{" "}
               <Link to="/signup" className="text-blue-500 focus:outline-none focus:underline hover:underline">

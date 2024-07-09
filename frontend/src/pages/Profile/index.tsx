@@ -33,7 +33,7 @@ function Profile() {
         <div className="flex-1 flex justify-between items-start text-center space-y-2 sm:text-left">
           <div className="space-y-0.5">
             <div className="flex gap-4 items-center">
-              <p className="text-lg text-black font-semibold">{user.fname + " " + user.lname}</p>
+              <p className="text-lg text-black font-semibold capitalize">{user.fname + " " + user.lname}</p>
               <p className="text-slate-500 font-medium">{user.number}</p>
             </div>
             <p className="text-slate-500 font-medium text-sm">{user.email}</p>

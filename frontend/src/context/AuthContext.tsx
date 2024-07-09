@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import type { User } from "../types/types";
 import { loginApi, registerApi } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 // Define the AuthContextValue interface extending the State interface with additional methods
 interface AuthContextType {
@@ -9,7 +10,7 @@ interface AuthContextType {
   login: (fname: string, password: string) => Promise<void>;
   loading: boolean;
   logout: () => void;
-  register: (fname: string, lname: string, email: string, number: number) => Promise<boolean>;
+  register: (fname: string, lname: string, email: string, number: string) => void;
   error?: any;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
@@ -20,39 +21,55 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) setError(null); //reset error when user switches page
   }, [location.pathname]);
 
   const logout = () => {
+    localStorage.removeItem("access_token");
     setUser(null);
+    setError(null);
+    navigate("/login");
   };
 
   const login = async (fname: string, password: string) => {
     setLoading(true);
     try {
-      const userObj = await loginApi(fname, password);
-      if (userObj) setUser(userObj);
+      const res = await loginApi(fname, password);
+      if (res.ok) {
+        const jsonRes = await res.json();
+        localStorage.setItem("access_token", jsonRes.token);
+        setUser(jsonRes.user);
+        setError(null);
+      } else {
+        const errorData = await res.json();
+        setError({ type: "login", message: errorData.message });
+      }
     } catch (error) {
-      console.error(error);
-      setError(error);
+      console.error("Error logging in:", error);
+      setError({ type: "login", message: "An unexpected error occurred." });
     }
     setLoading(false);
   };
 
-  const register = async (fname: string, lname: string, email: string, number: number) => {
+  const register = async (fname: string, lname: string, email: string, number: string) => {
     setLoading(true);
-    let isRegistrationSuccess = false;
     try {
-      isRegistrationSuccess = await registerApi(fname, lname, email, number);
-      if (isRegistrationSuccess) alert("Registration Success!, Access you password in you email inbox");
+      const res = await registerApi(fname, lname, email, number);
+      if (res.ok) {
+        alert("Registration successful, please login");
+        setError(null);
+      } else {
+        const errorData = await res.json();
+        setError({ type: "register", message: errorData.message });
+      }
     } catch (error) {
-      alert("Some error occurred");
-      setError(error);
+      console.error("Error registering:", error);
+      setError({ type: "register", message: "An unexpected error occurred." });
     }
     setLoading(false);
-    return isRegistrationSuccess;
   };
 
   const value: AuthContextType = {
@@ -61,6 +78,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     register,
     loading,
     user,
+    error,
     setUser,
   };
   //   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

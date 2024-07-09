@@ -5,22 +5,16 @@ export async function loginApi(fname: string, password: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ fname, password }),
   });
-  const jsonRes = await res.json();
-  localStorage.setItem("access_token", `Bearer ${jsonRes.token}`); //FIXME: send token with cookie
-  if (res.status === 401 || res.status === 400) alert("Invalid credentials");
-  else if (res.ok) return jsonRes.user;
-  throw new Error("Could not login, Error: " + jsonRes?.message);
+  return res;
 }
 
-export async function registerApi(fname: string, lname: string, email: string, number: number) {
+export async function registerApi(fname: string, lname: string, email: string, number: string) {
   const res = await fetch(new URL("register", BASE_URL), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ fname, lname, email, number }),
   });
-  const jsonRes = await res.json();
-  if (res.ok) return true;
-  throw new Error("Could not Register User, Error: " + jsonRes?.message);
+  return res;
 }
 
 export async function editUserApi({ bio, imgUrl = "" }: { bio: string; imgUrl?: string }) {

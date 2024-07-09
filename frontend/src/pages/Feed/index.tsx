@@ -28,7 +28,7 @@ function Feed() {
               See All &#8680;
             </Link>
           </div>
-          <div className="flex overflow-x-scroll gap-3 items-center justify-start">
+          <div className="flex gap-3 items-center justify-start">
             {user.videos.map((video) => (
               <VideoCard key={video._id} {...video} />
             ))}
