@@ -5,9 +5,7 @@ import Spinner from "../../components/Spinner";
 import VideoCard from "../../components/VideoCard";
 import { VideoProps } from "../../types/types";
 
-interface indexProps {}
-
-function UserVideos({}: indexProps) {
+function UserVideos() {
   const [searchParams] = useSearchParams();
   const username = searchParams.get("user");
   const navigate = useNavigate();

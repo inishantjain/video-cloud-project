@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { getVideoFeedApi } from "../../services/api";
 import { User } from "../../types/types";
-import { Link, json } from "react-router-dom";
+import { Link } from "react-router-dom";
 import VideoCard from "../../components/VideoCard";
 import Spinner from "../../components/Spinner";
 
 function Feed() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {

@@ -47,7 +47,7 @@ export async function getVideoFeedApi() {
 
 //TODO: fix this function integrity
 export async function getVideoByUserApi({ userId, username }: { userId?: string; username?: string }) {
-  let url = new URL("videos", BASE_URL);
+  const url = new URL("videos", BASE_URL);
   if (userId) url.searchParams.set("userId", userId);
   else if (username) url.searchParams.set("username", username);
   const res = await fetch(url);

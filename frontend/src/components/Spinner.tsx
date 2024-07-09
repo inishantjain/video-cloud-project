@@ -1,10 +1,16 @@
-export default function Spinner(props: any) {
+type SpinnerProps = {
+  size?: number; // Size of the spinner in pixels
+  className?: string; // Additional custom class names
+};
+
+export default function Spinner({ size = 24, className = "" }: SpinnerProps) {
   return (
     <svg
-      {...props}
+      className={`inline w-4 h-4 me-3 text-white animate-spin ${className}`}
+      width={size}
+      height={size}
       aria-hidden="true"
       role="status"
-      className="inline w-4 h-4 me-3 text-white animate-spin"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

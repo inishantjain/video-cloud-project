@@ -10,10 +10,12 @@ import { getVideoByUserApi } from "../../services/api";
 /**Component */
 function Profile() {
   const { user } = useAuth();
-  if (!user) return <Navigate to={"/login"} />;
+
   const [bioChangeModalOpen, setBioChangeModalOpen] = useState(false);
   const [videoUploadModalOpen, setVideoUploadModalOpen] = useState(false);
   const [videos, setVideos] = useState<VideoProps[]>([]);
+
+  if (!user) return <Navigate to={"/login"} />;
 
   useEffect(() => {
     (async () => {

@@ -25,7 +25,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     if (error) setError(null); //reset error when user switches page
-  }, [location.pathname]);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("access_token");
