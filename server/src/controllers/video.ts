@@ -22,7 +22,7 @@ export const addVideo = asyncWrapper(async (req: Request, res: Response) => {
   } catch (error) {
     throw new CustomError("Some error occurred while uploading video");
   }
-  console.log(uploadedVideo?.secure_url);
+  // console.log(uploadedVideo?.secure_url);
   const video = await Video.create({ description, title, url: uploadedVideo?.secure_url });
   await User.findByIdAndUpdate(userId, { $push: { videos: video._id } });
   res.status(200).json({ videoData: video });

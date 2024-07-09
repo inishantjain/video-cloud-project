@@ -26,18 +26,29 @@ const VideoUploadModal = ({ setModal, setVideosState }: Props) => {
     });
   };
 
-  async function handleSave() {
-    if (!videoFile || !previewSource) return;
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("title", form.title);
-      formData.append("description", form.title);
-      formData.append("video", videoFile);
+  function validate() {
+    if (!videoFile || !previewSource) return alert("Video is not provided");
+    else if (!form.title) return alert("Video title is required");
+    else if (!form.description) return alert("Video description is required");
+    return true;
+  }
 
-      const videoData = await uploadVideoApi(formData);
-      if (videoData) setVideosState((prev) => [...prev, videoData]);
-      setModal(false);
+  async function handleSave() {
+    if (!validate()) return;
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("description", form.title);
+    formData.append("video", videoFile!);
+    try {
+      const res = await uploadVideoApi(formData);
+      if (res.ok) {
+        const videoData = (await res.json()).videoData;
+        if (videoData) setVideosState((prev) => [...prev, videoData]);
+        setModal(false);
+      } else {
+        setError("Error occurred while uploading the video" + error);
+      }
     } catch (error: any) {
       setError("Some error occurred while uploading the video" + error?.message);
     }
@@ -121,7 +132,7 @@ const VideoUploadModal = ({ setModal, setVideosState }: Props) => {
             </div>
             <button
               onClick={handleSave}
-              disabled={loading || !videoFile || !previewSource || !form.title || !form.description}
+              disabled={loading}
               className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform disabled:bg-blue-900 bg-blue-600 rounded-md sm:w-auto sm:mt-0 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             >
               {loading ? <Spinner /> : "Upload"}

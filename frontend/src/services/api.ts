@@ -20,35 +20,29 @@ export async function registerApi(fname: string, lname: string, email: string, n
 export async function editUserApi({ bio, imgUrl = "" }: { bio: string; imgUrl?: string }) {
   const res = await fetch(new URL("editUser", BASE_URL), {
     method: "PATCH",
-    headers: { authorization: localStorage.getItem("access_token")!, "Content-Type": "application/json" },
+    headers: { authorization: `Bearer ${localStorage.getItem("access_token")!}`, "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({ bio, imgUrl }),
   });
-  const jsonRes = await res.json();
-  if (res.ok) return true;
-  throw new Error("Could not change bio: " + jsonRes?.message);
+  return res;
 }
 
 export async function uploadVideoApi(formData: FormData) {
   const res = await fetch(new URL("uploadVideo", BASE_URL), {
     method: "POST",
     headers: {
-      authorization: localStorage.getItem("access_token")!,
+      authorization: `Bearer ${localStorage.getItem("access_token")!}`,
     },
     credentials: "include",
     body: formData,
   });
 
-  const jsonRes = await res.json();
-  if (res.ok) return jsonRes.videoData;
-  throw new Error("Could not change bio: " + jsonRes?.message);
+  return res;
 }
 
 export async function getVideoFeedApi() {
   const res = await fetch(new URL("videoFeed", BASE_URL));
-  const jsonRes = await res.json();
-  if (res.ok) return jsonRes.users;
-  throw new Error("Could not fetch videos: " + jsonRes?.message);
+  return res;
 }
 
 //TODO: fix this function integrity

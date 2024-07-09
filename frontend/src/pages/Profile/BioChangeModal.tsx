@@ -12,9 +12,13 @@ const BioChangeModal = ({ setModal }: Props) => {
 
   async function saveHandler() {
     try {
-      if (await editUserApi({ bio })) {
+      const res = await editUserApi({ bio });
+      if (res.ok) {
         setModal(false);
         setUser({ ...user!, bio });
+      } else {
+        alert("An error occurred while updating the bio");
+        //TODO: show error message
       }
     } catch (error) {
       alert("An error occurred while updating the bio");
