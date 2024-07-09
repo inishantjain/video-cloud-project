@@ -59,7 +59,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       const res = await registerApi(fname, lname, email, number);
       if (res.ok) {
-        alert("Registration successful, please login");
+        alert("Registration successful, Your password has been sent and it may go to your spam folder.");
         setError(null);
       } else {
         const errorData = await res.json();
